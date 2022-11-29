@@ -17,6 +17,28 @@ class Student:
         else:
             return 'Ошибка'
 
+    def __str__(self):
+        courses_in_progress_string = ', '.join(self.courses_in_progress)
+        finished_courses_string = ', '.join(self.finished_courses)
+        sum_hw = 0
+        counter = 0
+        for i in self.grades:
+            sum_hw += sum(self.grades[i]) / len(self.grades[i])
+            counter += 1
+            avg_grade = round(sum_hw / counter, 2)
+        res = f'Имя: {self.name}\n' \
+              f'Фамилия: {self.surname}\n' \
+              f'Средняя оценка за домашнее задание: {avg_grade}\n' \
+              f'Курсы в процессе обучения: {courses_in_progress_string}\n' \
+              f'Завершенные курсы: {finished_courses_string}'
+        return res
+
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print('Такое сравнение некорректно')
+            return
+        return self.avg_grade < other.avg_grade
+
 
 class Mentor:
     def __init__(self, name, surname):
@@ -30,6 +52,22 @@ class Lecturer(Mentor):
         super().__init__(name, surname)
         self.grades = {}
 
+    def __str__(self):
+        sum_hw = 0
+        counter = 0
+        for i in self.grades:
+            sum_hw += sum(self.grades[i]) / len(self.grades[i])
+            counter += 1
+            avg_grade = round(sum_hw / counter, 2)
+        res = f'Имя = {self.name}\nФамилия = {self.surname}\nСредняя оценка за лекции: {avg_grade}'
+        return res
+
+    def __lt__(self, other):
+        if not isinstance(other, Lecturer):
+            print('Такое сравнение некорректно')
+            return
+        return avg_grade < avg_grade
+
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
@@ -41,27 +79,36 @@ class Reviewer(Mentor):
         else:
             return 'Ошибка'
 
+    def __str__(self):
+        res = f'Имя = {self.name}\nФамилия = {self.surname}'
+        return res
 
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
 
-cool_reviewer = Reviewer('Some', 'Buddy')
-cool_reviewer.courses_attached += ['Python']
+some_student = Student('Ruoy', 'Eman', 'your gender')
+some_student.courses_in_progress += ['Python']
+some_student.courses_in_progress += ['Git']
+some_student.finished_courses += ['Введение в программирование']
 
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
+some_reviewer = Reviewer('Some', 'Buddy')
+some_reviewer.courses_attached += ['Python']
 
-print(best_student.grades)
+some_reviewer.rate_hw(some_student, 'Python', 10)
+some_reviewer.rate_hw(some_student, 'Python', 10)
+some_reviewer.rate_hw(some_student, 'Python', 10)
 
-best_lecturer = Lecturer('Oleg', 'Aleksandrov')
-best_lecturer.courses_attached += ['Python']
+print(some_student.grades)
 
-cool_student = Student('Peter', 'Buddy', 'Male')
-cool_student.courses_in_progress += ['Python']
+some_lecturer = Lecturer('Oleg', 'Aleksandrov')
+some_lecturer.courses_attached += ['Python']
 
-cool_student.rate_lecture(best_lecturer, 'Python', 10)
-cool_student.rate_lecture(best_lecturer, 'Python', 9)
-cool_student.rate_lecture(best_lecturer, 'Python', 9)
+some_student.rate_lecture(some_lecturer, 'Python', 10)
+some_student.rate_lecture(some_lecturer, 'Python', 9)
+some_student.rate_lecture(some_lecturer, 'Python', 9)
 
-print(best_lecturer.grades)
+print(some_lecturer.grades)
+
+print(some_reviewer)
+
+print(some_lecturer)
+
+print(some_student)
