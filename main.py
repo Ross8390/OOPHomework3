@@ -96,16 +96,12 @@ some_reviewer.rate_hw(some_student, 'Python', 10)
 some_reviewer.rate_hw(some_student, 'Python', 10)
 some_reviewer.rate_hw(some_student, 'Python', 10)
 
-print(some_student.grades)
-
 some_lecturer = Lecturer('Oleg', 'Aleksandrov')
 some_lecturer.courses_attached += ['Python']
 
 some_student.rate_lecture(some_lecturer, 'Python', 10)
 some_student.rate_lecture(some_lecturer, 'Python', 9)
 some_student.rate_lecture(some_lecturer, 'Python', 9)
-
-print(some_lecturer.grades)
 
 print(some_reviewer)
 
