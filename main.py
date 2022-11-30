@@ -7,6 +7,7 @@ class Student:
         self.finished_courses = []
         self.courses_in_progress = []
         self.grades = {}
+        self.avg_grade = float()
 
     def rate_lecture(self, lecturer, course, grade):
         if isinstance(lecturer, Lecturer) and course in lecturer.courses_attached and course in self.courses_in_progress:
@@ -18,17 +19,15 @@ class Student:
             return 'Ошибка'
 
     def __str__(self):
+        grades_counter = 0
         courses_in_progress_string = ', '.join(self.courses_in_progress)
         finished_courses_string = ', '.join(self.finished_courses)
-        sum_hw = 0
-        counter = 0
         for i in self.grades:
-            sum_hw += sum(self.grades[i]) / len(self.grades[i])
-            counter += 1
-            avg_grade = round(sum_hw / counter, 2)
+            grades_counter += len(self.grades[i])
+        self.avg_grade = round(sum(map(sum, self.grades.values())) / grades_counter, 2)
         res = f'Имя: {self.name}\n' \
               f'Фамилия: {self.surname}\n' \
-              f'Средняя оценка за домашнее задание: {avg_grade}\n' \
+              f'Средняя оценка за домашнее задание: {self.avg_grade}\n' \
               f'Курсы в процессе обучения: {courses_in_progress_string}\n' \
               f'Завершенные курсы: {finished_courses_string}'
         return res
@@ -51,15 +50,14 @@ class Lecturer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.grades = {}
+        self.avg_grade = float()
 
     def __str__(self):
-        sum_hw = 0
-        counter = 0
+        grades_counter = 0
         for i in self.grades:
-            sum_hw += sum(self.grades[i]) / len(self.grades[i])
-            counter += 1
-            avg_grade = round(sum_hw / counter, 2)
-        res = f'Имя = {self.name}\nФамилия = {self.surname}\nСредняя оценка за лекции: {avg_grade}'
+            grades_counter += len(self.grades[i])
+        self.avg_grade = round(sum(map(sum, self.grades.values())) / grades_counter, 2)
+        res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.avg_grade}'
         return res
 
     def __lt__(self, other):
@@ -104,7 +102,8 @@ some_student.rate_lecture(some_lecturer, 'Python', 9)
 some_student.rate_lecture(some_lecturer, 'Python', 9)
 
 print(some_reviewer)
-
+print()
 print(some_lecturer)
-
+print()
 print(some_student)
+print()
